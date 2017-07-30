@@ -21,6 +21,14 @@ var fileToInversionsTests = []struct {
 	{"examples/length-two-no-inversions", 0},
 	{"examples/length-two-one-inversion", 1},
 	{"examples/length-three-one-inversion", 1},
+	{"examples/length-five-three-inversions", 3},
+	{"examples/length-five-four-inversions", 4},
+	{"examples/length-five-ten-inversions", 10},
+	{"examples/length-six-three-inversions", 3},
+	{"examples/length-six-five-inversions", 5},
+	{"examples/length-15-56-inversions", 56},
+	{"examples/length-50-590-inversions", 590},
+	{"examples/length-100-2372-inversions", 2372},
 }
 
 func TestFileToInversions(t *testing.T) {
@@ -37,7 +45,6 @@ func TestFileToInversions(t *testing.T) {
 				amountInv,
 			))
 		}
-
 	}
 }
 
