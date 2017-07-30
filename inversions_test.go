@@ -1,29 +1,40 @@
 package inversions
 
 import (
+	"fmt"
 	"testing"
 )
 
 func TestInversionsDefaultsToZero(t *testing.T) {
-	if Inversions() != 0 {
+	if inv, err := Inversions([]string{}); err != nil && inv != 0 {
 		t.Error("expected 'Inversions' to return zero by default")
 	}
 }
 
-func TestFileToInversionsWithEmptyFileReturnsZero(t *testing.T) {
-	if FileToInversions("examples/length-zero.txt") != 0 {
-		t.Error("expected 'FileToInversions' to return zero with empty file")
-	}
+var fileToInversionsTests = []struct {
+	filePath           string
+	expectedInversions int
+}{
+	{"examples/length-zero.txt", 0},
+	{"examples/length-one.txt", 0},
+	{"examples/length-two-no-inversions.txt", 0},
+	{"examples/length-two-one-inversion.txt", 1},
 }
 
-func TestFileToInversionsWithLengthOneFileReturnsZero(t *testing.T) {
-	if FileToInversions("examples/length-one.txt") != 0 {
-		t.Error("expected 'FileToInversions' to return zero with length one file")
-	}
-}
+func TestFileToInversions(t *testing.T) {
+	for _, test := range fileToInversionsTests {
+		amountInv, err := FileToInversions(test.filePath)
+		if err != nil {
+			t.Error(fmt.Sprintf("expected 'FileToInversions' with %v to not throw an error", test.filePath), err)
+		}
+		if amountInv != test.expectedInversions {
+			t.Error(fmt.Sprintf(
+				"expected 'FileToInversions with %v to return %v inversions, but returned %v instead",
+				test.filePath,
+				test.expectedInversions,
+				amountInv,
+			))
+		}
 
-func TestFileToInversionsWithLengthTwoWithoutInversions(t *testing.T) {
-	if FileToInversions("examples/length-two-no-inversions.txt") != 0 {
-		t.Error("expected 'FileToInversions' to return zero with length two file without inversions")
 	}
 }
