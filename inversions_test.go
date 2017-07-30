@@ -2,12 +2,12 @@ package inversions
 
 import (
 	"fmt"
+	"reflect"
 	"testing"
 )
 
 func TestInversionsDefaultsToZero(t *testing.T) {
-	t.Skip()
-	if inv, err := Inversions([]int{}); err != nil && inv != 0 {
+	if _, inv := Inversions([]int{}); inv != 0 {
 		t.Error("expected 'Inversions' to return zero by default")
 	}
 }
@@ -38,5 +38,34 @@ func TestFileToInversions(t *testing.T) {
 			))
 		}
 
+	}
+}
+
+var countSplitInversionsTests = []struct {
+	a          []int
+	b          []int
+	c          []int
+	inversions int
+}{
+	// Without split inversion
+	{[]int{}, []int{}, []int{}, 0},
+	{[]int{1, 2, 3}, []int{4, 5, 6}, []int{1, 2, 3, 4, 5, 6}, 0},
+	{[]int{1, 2}, []int{4, 5, 6}, []int{1, 2, 4, 5, 6}, 0},
+	{[]int{1, 2, 3}, []int{5, 6}, []int{1, 2, 3, 5, 6}, 0},
+	// With split inversion
+	{[]int{2}, []int{1}, []int{1, 2}, 1},
+	{[]int{1, 2, 4}, []int{3, 5, 6}, []int{1, 2, 3, 4, 5, 6}, 1},
+	{[]int{4, 5, 6}, []int{1, 2, 3}, []int{1, 2, 3, 4, 5, 6}, 9},
+}
+
+func TestCountSplitInversions(t *testing.T) {
+	for _, test := range countSplitInversionsTests {
+		c, inversions := countSplitInversions(test.a, test.b)
+		if reflect.DeepEqual(test.c, c) != true {
+			t.Error(fmt.Sprintf("expected %v, got %v", test.c, c))
+		}
+		if inversions != test.inversions {
+			t.Error(fmt.Sprintf("expected %v inversions, but got %v", test.inversions, inversions))
+		}
 	}
 }
