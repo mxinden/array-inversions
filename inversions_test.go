@@ -7,7 +7,7 @@ import (
 
 func TestInversionsDefaultsToZero(t *testing.T) {
 	t.Skip()
-	if inv, err := Inversions([]string{}); err != nil && inv != 0 {
+	if inv, err := Inversions([]int{}); err != nil && inv != 0 {
 		t.Error("expected 'Inversions' to return zero by default")
 	}
 }
