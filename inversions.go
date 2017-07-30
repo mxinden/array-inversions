@@ -6,11 +6,50 @@ import (
 	"strings"
 )
 
-func Inversions(lines []int) (int, error) {
-	if len(lines) < 2 {
-		return 0, nil
+func Inversions(lines []int) ([]int, int) {
+	n := len(lines)
+	if n < 2 {
+		return lines, 0
 	}
-	return 1, nil
+
+	left, leftInv := Inversions(lines[0:(n / 2)])
+	right, rightInv := Inversions(lines[(n / 2):])
+
+	combined, splitInv := countSplitInversions(left, right)
+
+	return combined, leftInv + rightInv + splitInv
+}
+
+func countSplitInversions(a, b []int) ([]int, int) {
+	lenA := len(a)
+	aI := 0
+	lenB := len(b)
+	bI := 0
+	c := []int{}
+	splitInv := 0
+
+	for k := 0; k < lenA+lenB; k++ {
+		if aI >= lenA {
+			c = append(c, b[bI])
+			bI++
+			continue
+		}
+		if bI >= lenB {
+			c = append(c, a[aI])
+			aI++
+			continue
+		}
+		if a[aI] < b[bI] {
+			c = append(c, a[aI])
+			aI++
+		} else {
+			c = append(c, b[bI])
+			bI++
+			splitInv += ((lenA+lenB)/2 - aI)
+		}
+	}
+
+	return c, splitInv
 }
 
 func FileToInversions(filePath string) (int, error) {
@@ -24,7 +63,8 @@ func FileToInversions(filePath string) (int, error) {
 		return 0, err
 	}
 
-	return Inversions(intLines)
+	_, inversions := Inversions(intLines)
+	return inversions, nil
 }
 
 func fileToStringSlice(filePath string) ([]string, error) {
