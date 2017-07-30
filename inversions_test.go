@@ -21,3 +21,9 @@ func TestFileToInversionsWithLengthOneFileReturnsZero(t *testing.T) {
 		t.Error("expected 'FileToInversions' to return zero with length one file")
 	}
 }
+
+func TestFileToInversionsWithLengthTwoWithoutInversions(t *testing.T) {
+	if FileToInversions("examples/length-two-no-inversions.txt") != 0 {
+		t.Error("expected 'FileToInversions' to return zero with length two file without inversions")
+	}
+}
