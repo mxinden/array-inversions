@@ -9,3 +9,9 @@ func TestInversionsDefaultsToZero(t *testing.T) {
 		t.Error("expected 'Inversions' to return zero by default")
 	}
 }
+
+func TestFileToInversionsWithEmptyFileReturnsZero(t *testing.T) {
+	if FileToInversions("examples/length-zero.txt") != 0 {
+		t.Error("expected 'FileToInversions' to return zero with empty file")
+	}
+}
